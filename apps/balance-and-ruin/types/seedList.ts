@@ -9,20 +9,21 @@ export type SeedId = number | string | null;
 type ArgsList = string | string[] | null;
 
 export type UserSeed = {
-  args_list: ArgsList;
-  channel_id: SeedId;
-  channel_name: string | null;
-  creator_id: SeedId;
-  creator_name: string | null;
-  flagstring: string | null;
-  hash: string | null;
+  args_list?: ArgsList;
+  channel_id?: SeedId;
+  channel_name?: string | null;
+  creator_id?: SeedId;
+  creator_name?: string | null;
+  flagstring?: string | null;
+  hash?: string | null;
   id: number | string;
-  random_sprites: boolean | null;
-  seed: string | null;
+  random_sprites?: boolean | null;
+  seed?: string | null;
   seed_type: string;
-  server_id: SeedId;
-  server_name: string | null;
-  share_url: string | null;
+  server_id?: SeedId;
+  server_name?: string | null;
+  share_url?: string | null;
+  source?: string | null;
   timestamp: string;
 };
 

@@ -18,11 +18,7 @@ import { setRawFlags } from "~/state/flagSlice";
 import { setRawObjectives } from "~/state/objectiveSlice";
 import { setRawStartingItems } from "~/state/itemSlice";
 import { parseSeedListResponse, type SeedListResponse } from "~/types/seedList";
-import {
-  formatSeedSource,
-  resolveSeedShareUrl,
-  SEED_SOURCE,
-} from "~/utils/seedHistory";
+import { resolveSeedShareUrl, SEED_SOURCE } from "~/utils/seedHistory";
 
 const getCleanPresetName = (seedType: string) => {
   if (!seedType) return "custom";
@@ -339,6 +335,21 @@ export const ProfileTab = () => {
             seed: "112233445",
             hash: "Setzer, Strago, Gogo, Terra",
             flagstring: "-cg -cont -open -sbn -sbs -sbt -sd1 -sd2 -sd3",
+          },
+          {
+            // Legacy seedbot2000 row: only the nine migrated columns are present.
+            id: "legacy-seedbot-2000",
+            creator_id: "123456789012345678",
+            creator_name: "legacy_creator",
+            seed_type: "preset_legacy",
+            share_url: "/media/preset_legacy_legacy-seedbot-2000.zip",
+            timestamp: new Date(
+              Date.now() - 8 * 24 * 60 * 60 * 1000,
+            ).toISOString(),
+            server_name: "seedbot2000",
+            server_id: "legacy-server",
+            channel_name: "legacy-channel",
+            channel_id: "legacy-channel-id",
           },
         ]);
         setUserSeeds(parsedSeeds ?? []);
@@ -1542,7 +1553,6 @@ export const ProfileTab = () => {
                 }
                 // share_url may be foreign-origin or relative; see utils/seedHistory
                 const shareUrl = resolveSeedShareUrl(seed);
-                const sourceLabel = formatSeedSource(seed);
                 return (
                   <div
                     key={seedId}
@@ -1745,52 +1755,63 @@ export const ProfileTab = () => {
                             </div>
                           </div>
                         )}
-                        {seed.flagstring && (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              marginTop: "0.5rem",
-                              flexWrap: "wrap",
-                              gap: "1rem",
-                            }}
-                          >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginTop: "0.5rem",
+                            flexWrap: "wrap",
+                            gap: "1rem",
+                          }}
+                        >
+                          {seed.flagstring && (
                             <button
                               onClick={() => {
-                                if (!seed.flagstring) {
-                                  return;
-                                }
+                                if (!seed.flagstring) return;
                                 dispatch(setRawFlags(seed.flagstring));
                                 dispatch(setRawObjectives(seed.flagstring));
                                 dispatch(setRawStartingItems(seed.flagstring));
                                 router.push("/create?tab=generate");
                               }}
+                              style={{
+                                backgroundColor: "#3b82f6",
+                                border: "none",
+                                color: "#ffffff",
+                                padding: "0.4rem 1rem",
+                                borderRadius: "4px",
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                              }}
+                              className="hover:bg-blue-600 transition-colors"
                             >
                               Load Flags
                             </button>
-                            {shareUrl && (
-                              <a
-                                href={shareUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                  backgroundColor: "#3b82f6",
-                                  border: "none",
-                                  color: "#ffffff",
-                                  padding: "0.4rem 1rem",
-                                  borderRadius: "4px",
-                                  fontSize: "0.8rem",
-                                  cursor: "pointer",
-                                  fontWeight: "bold",
-                                }}
-                                className="hover:bg-blue-600 transition-colors"
-                              >
-                                View Seed ↗
-                              </a>
-                            )}
-                          </div>
-                        )}
+                          )}
+                          {shareUrl && (
+                            <a
+                              href={shareUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                backgroundColor: "rgba(59, 130, 246, 0.1)",
+                                border: "1px solid #3b82f6",
+                                color: "#60a5fa",
+                                padding: "0.4rem 1rem",
+                                borderRadius: "4px",
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                                textDecoration: "none",
+                                display: "inline-block",
+                              }}
+                              className="hover:bg-blue-500 hover:text-white transition-colors"
+                            >
+                              View Seed ↗
+                            </a>
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>

@@ -59,6 +59,7 @@ export function isUserSeed(value: unknown): value is UserSeed {
     isOptionalString(value.seed) &&
     isOptionalString(value.server_name) &&
     isOptionalString(value.share_url) &&
+    isOptionalString(value.source) &&
     (value.random_sprites == null || isBoolean(value.random_sprites))
   );
 }
